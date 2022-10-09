@@ -49,8 +49,12 @@ pixelsPerMetric = None
 # loop over the contours individually
 for c in cnts:
 	# if the contour is not sufficiently large, ignore it
-	if cv2.contourArea(c) < 100:
+	ca = cv2.contourArea(c)
+	if ca < 100:
 		continue
+	# if the contour is that of the image 
+	elif ca == 269.0: 
+		break
 
 	# compute the rotated bounding box of the contour
 	orig = image.copy()
