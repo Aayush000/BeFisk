@@ -61,15 +61,16 @@ def get_view_size(image, view):
 		
 		if view == "top":
 			if ca != 90966.0:
-				print(ca)
 				continue
 		else:
-			if ca != 7536.5:
-				print(ca)
+			if ca !=7536.5:
 				continue
+			# if ca < 1000 :
+			# 	continue
+			# print(ca)
 	
 		# compute the rotated bounding box of the contour
-		orig = image.copy()
+		labeled_img = image.copy()
 		box = cv2.minAreaRect(c)
 		box = cv2.cv.BoxPoints(box) if imutils.is_cv2() else cv2.boxPoints(box)
 		box = np.array(box, dtype="int")
@@ -79,11 +80,11 @@ def get_view_size(image, view):
 		# order, then draw the outline of the rotated bounding
 		# box
 		box = perspective.order_points(box)
-		cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
+		cv2.drawContours(labeled_img, [box.astype("int")], -1, (0, 255, 0), 2)
 
-		# loop over the original points and draw them
+		# loop over the labeled_imginal points and draw them
 		for (x, y) in box:
-			cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
+			cv2.circle(labeled_img, (int(x), int(y)), 5, (0, 0, 255), -1)
 
 		# unpack the ordered bounding box, then compute the midpoint
 		# between the top-left and top-right coordinates, followed by
@@ -98,15 +99,15 @@ def get_view_size(image, view):
 		(trbrX, trbrY) = midpoint(tr, br)
 
 		# draw the midpoints on the image
-		cv2.circle(orig, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
-		cv2.circle(orig, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
-		cv2.circle(orig, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
-		cv2.circle(orig, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
+		cv2.circle(labeled_img, (int(tltrX), int(tltrY)), 5, (255, 0, 0), -1)
+		cv2.circle(labeled_img, (int(blbrX), int(blbrY)), 5, (255, 0, 0), -1)
+		cv2.circle(labeled_img, (int(tlblX), int(tlblY)), 5, (255, 0, 0), -1)
+		cv2.circle(labeled_img, (int(trbrX), int(trbrY)), 5, (255, 0, 0), -1)
 
 		# draw lines between the midpoints
-		cv2.line(orig, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
+		cv2.line(labeled_img, (int(tltrX), int(tltrY)), (int(blbrX), int(blbrY)),
 			(255, 0, 255), 2)
-		cv2.line(orig, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
+		cv2.line(labeled_img, (int(tlblX), int(tlblY)), (int(trbrX), int(trbrY)),
 			(255, 0, 255), 2)
 
 		# compute the Euclidean distance between the midpoints
@@ -120,19 +121,40 @@ def get_view_size(image, view):
 			pixelsPerMetric = dB / .955
 
 		# compute the size of the object
-		dimA = dA / pixelsPerMetric
-		dimB = dB / pixelsPerMetric
+		dimA = dA / 36 
+		dimB = dB / 36
 
 		# draw the object sizes on the image
-		cv2.putText(orig, "{:.1f}in".format(dimA),
+		cv2.putText(labeled_img, "{:.1f}in".format(dimA),
 			(int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
-		cv2.putText(orig, "{:.1f}in".format(dimB),
+		cv2.putText(labeled_img, "{:.1f}in".format(dimB),
 			(int(trbrX + 10), int(trbrY)), cv2.FONT_HERSHEY_SIMPLEX,
 			0.65, (255, 255, 255), 2)
 
 		# show the output image
-		cv2.imshow("Image", orig)
+		if view == "top":
+			labeled_img = cv2.resize(labeled_img, (1280, 720), interpolation= cv2.INTER_LINEAR) #resize video
+		else:
+			labeled_img = cv2.resize(labeled_img, (500, 700), interpolation= cv2.INTER_LINEAR) #resize video
+		cv2.imshow("Image", labeled_img)
 		cv2.waitKey(0)
-		return (dA, dB)
+		return (dimA, dimB)
 	
+def get_bag_size(images):
+	length, width, height = 0,0,0
+	for view, image in images.items():
+		size = get_view_size(image, view)
+		print('{0} view has the size {1}'.format(view, size))
+		if view == "top":
+			length, width = size[1],size[0]
+		else:
+			height = size[1]
+	dimensions = length, width, height
+	return dimensions
+
+
+
+images = {"top":"images/top.png","side":"images/side.png"}
+# images  = {"side":"images/side.png"}
+print(get_bag_size(images))
