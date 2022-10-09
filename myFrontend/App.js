@@ -3,6 +3,9 @@ import { StyleSheet } from "react-native";
 import HomePage from "./pages/HomePage";
 import Landing from "./pages/Landing";
 import TimelinePage from "./pages/TimelinePage";
+import CheckInBags from "./pages/CheckInBags";
+import ImageScanning from "./pages/ImageScanning";
+import NavigationPage from "./pages/NavigationPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -22,6 +25,21 @@ const App = () => (
       <Stack.Screen
         name="TimelinePage"
         component={TimelinePage}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="CheckInBags"
+        component={CheckInBags}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="ImageScanning"
+        component={ImageScanning}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="NavigationPage"
+        component={NavigationPage}
         options={{ title: "" }}
       />
     </Stack.Navigator>
