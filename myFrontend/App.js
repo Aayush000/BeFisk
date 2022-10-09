@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import HomePage from "./pages/HomePage";
 import Landing from "./pages/Landing";
+import TimelinePage from "./pages/TimelinePage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -16,6 +17,11 @@ const App = () => (
       <Stack.Screen
         name="Landing"
         component={Landing}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="TimelinePage"
+        component={TimelinePage}
         options={{ title: "" }}
       />
     </Stack.Navigator>
