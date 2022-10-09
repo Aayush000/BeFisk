@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import {
   StyleSheet,
-  View,
-  Text,
   ScrollView,
   ImageBackground,
+  View,
+  Button,
 } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import Card from "../components/Card";
@@ -18,24 +18,61 @@ const data = [
       <Card
         name="Book Flight"
         status={true}
-        imageUrl={"https://i.imgur.com/PW67Wij.png"}
+        imageUrl="https://i.imgur.com/bb8FYJG.png"
+        buttonInfo="Nothing"
+        color="blue"
       />
     ),
   },
   {
-    title: "Get Digital Boarding Pass",
-    description: "Event 2 Description",
+    description: (
+      <Card
+        name="Get Digital Boarding Pass"
+        status={false}
+        imageUrl="https://i.imgur.com/PW67Wij.png"
+        buttonInfo="Get Pass"
+        color="grey"
+      />
+    ),
   },
-  { title: "Check-In Bags", description: "Event 3 Description" },
-  { title: "Drop-Off Bags", description: "Event 4 Description" },
-  { title: "Head to TSA", description: "Event 5 Description" },
+  {
+    description: (
+      <Card
+        name="Check-In Bags"
+        status={false}
+        imageUrl="https://i.imgur.com/PW67Wij.png"
+        buttonInfo="Bags"
+        color="grey"
+      />
+    ),
+  },
+  {
+    description: (
+      <Card
+        name="Drop-Off Bags"
+        status={false}
+        imageUrl="https://i.imgur.com/PW67Wij.png"
+        buttonInfo="Done"
+        color="grey"
+      />
+    ),
+  },
+  {
+    description: (
+      <Card
+        name="Head to TSA"
+        status={false}
+        imageUrl="https://i.imgur.com/PW67Wij.png"
+        buttonInfo="Done"
+        color="grey"
+      />
+    ),
+  },
 ];
 
 let status = true;
 
 const TimelinePage = () => (
-  // const [isComplete, setIsComplete] = useState(false);
-
   <ScrollView style={styles.container}>
     <ImageBackground source={image} resizeMode="cover" style={styles.image} />
     <Timeline
@@ -43,7 +80,7 @@ const TimelinePage = () => (
       columnFormat="two-column"
       style={styles.timeline}
       circleSize={50}
-      circleColor={status ? "green" : "grey"}
+      circleColor={status ? "blue" : "grey"}
     />
   </ScrollView>
 );
