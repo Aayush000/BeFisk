@@ -63,7 +63,7 @@ def get_view_size(image, view):
 			if ca != 90966.0:
 				continue
 		else:
-			if ca !=7536.5:
+			if ca != 236901.5:
 				continue
 			# if ca < 1000 :
 			# 	continue
@@ -121,8 +121,8 @@ def get_view_size(image, view):
 			pixelsPerMetric = dB / .955
 
 		# compute the size of the object
-		dimA = dA / 36 
-		dimB = dB / 36
+		dimA = (dA / 38) - 12
+		dimB = (dB / 38) - 12
 
 		# draw the object sizes on the image
 		cv2.putText(labeled_img, "{:.1f}in".format(dimA),
@@ -138,7 +138,8 @@ def get_view_size(image, view):
 		else:
 			labeled_img = cv2.resize(labeled_img, (500, 700), interpolation= cv2.INTER_LINEAR) #resize video
 		cv2.imshow("Image", labeled_img)
-		cv2.waitKey(0)
+		cv2.waitKey(10000)
+		cv2.imwrite("images/return" + view +".png", labeled_img)
 		return (dimA, dimB)
 	
 def get_bag_size(images):
@@ -147,14 +148,13 @@ def get_bag_size(images):
 		size = get_view_size(image, view)
 		print('{0} view has the size {1}'.format(view, size))
 		if view == "top":
-			length, width = size[1],size[0]
+			height, width = size[0],size[1]
 		else:
-			height = size[1]
+			length = size[0]
 	dimensions = length, width, height
 	return dimensions
+	
 
-
-
-images = {"top":"images/top.png","side":"images/side.png"}
-# images  = {"side":"images/side.png"}
+# images  = {"side":"images/side5.png"}
+images = {"top":"images/top.png","side":"images/side5.png"}
 print(get_bag_size(images))
